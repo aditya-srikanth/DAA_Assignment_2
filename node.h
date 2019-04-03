@@ -1,4 +1,4 @@
-#ifdef NODE
+#ifndef NODE
 #define NODE
 
 #include <string>
@@ -12,7 +12,7 @@ class Node{
 		Node(double,double);
 		double getX();
 		double getY();
-		pair<double,double> get_point();
-		void to_string();
+		std::pair<double,double> get_point();
+		std::string to_string();
 };
 #endif

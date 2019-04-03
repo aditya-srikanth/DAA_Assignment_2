@@ -14,11 +14,12 @@
 		double Node::getY(){
 			return this->y;
 		}
-		pair<double,double> Node::get_point(){
-			return make_pair(this->x,this->y);
+		std::pair<double,double> Node::get_point(){
+			return std::make_pair(this->x,this->y);
 		}
 		std::string Node::to_string(){
 			const int length = 30;
 			char format_string[length];
 			sprintf(format_string,"%lf,%lf",this->x,this->y);
+			std::string temp = format_string;
 		}

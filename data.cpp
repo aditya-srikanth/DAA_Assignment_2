@@ -7,7 +7,7 @@ Data::Data(){
 	this->path = DEFAULT_PATH;
 	this->delim = DEFAULT_DELIM;
 }
-Data::Data(std::string path,std::delim){
+Data::Data(std::string path,std::string delim){
 	this->path = path;
 	this->delim = delim; 
 }
@@ -27,8 +27,9 @@ std::vector<std::string> Data::split(const char *str, char delim )
 
     return result;
 }
-vector<Node> Data::read_data(){
-	fstream file_handle;
+
+std::vector<Node> Data::read_data(){
+	std::fstream file_handle;
 	file_handle.open(path,std::ios::in);
 
 	std::vector<Node> values;
@@ -37,7 +38,7 @@ vector<Node> Data::read_data(){
 		std::cout<<"File found, extracting the data\n";
 
 		std::string line;
-		while(std::getline(file,line)){
+		while(std::getline(file_handle,line)){
 			std::vector<std::string> temp = split(line.c_str(),delim.at(0));
 			// std::cout<<temp[0]<<","<<temp[1]<<"\n";
 			char* term;
