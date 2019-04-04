@@ -1,4 +1,6 @@
 path = "data/DataPoints.txt"
-delim = ","
 lines_path = "data/lines.txt"
-point_delim = ":"
+
+index_and_slope_delim = ';'
+slope_and_intercept_delim = ":"
+delim = ","

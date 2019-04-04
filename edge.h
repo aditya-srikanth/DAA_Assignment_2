@@ -18,7 +18,7 @@ class Edge{
         Edge(Node start,Node end);
         Edge(double slope,double intercept,Node first,Node second);
         Edge(double slope,double average_x_value,double start_y,double end_y);
-        std::string to_string();
+        std::string to_string(int first_index, int second_index);
         Node get_start();
         Node get_end();
 };

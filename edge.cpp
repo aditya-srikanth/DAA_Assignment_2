@@ -71,13 +71,15 @@ Edge::Edge(double slope,double average_x_value,double start_y,double end_y){
 }
 /**
  * @brief 
- * It returns a string that shows the nodes in the following format x,y:x,y
+ * @param first_index The index of the first node in the input array
+ * @param second_index The index of the second node in the input array
+ * It returns a string that shows the nodes in the following format first_index,second_index slope,index
  * @return std::string 
  */
-std::string Edge::to_string(){
+std::string Edge::to_string(int first_index, int second_index){
     const int length = 50;
     char temp[length];
-    sprintf(temp,"%lf:%lf",this->slope,this->intercept);
+    sprintf(temp,"%d,%d; %lf:%lf",first_index,second_index,this->slope,this->intercept);
     std::string val = temp;
     return val;
 }

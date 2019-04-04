@@ -135,28 +135,26 @@ int main(int argc,char** argv){
 	}
 
 	int previous = 0;
+
 	for (int j = 1;j < values.size() ;j++){
 		for(int i=0; i < j; i++ ){
 			if(i == 0 ){
 				answer[j]=std::min(errors[i][j] + LINE_COST ,answer[j]); // As we try from the starting point, the line goes from the start to the current point
-				data.write_tries(edges[i][j].to_string());
 				previous = 0;
 			}
 			else{//TODO handle intersection of the lines.
 				if(answer[j]>std::min(errors[i][j] + LINE_COST + answer[i-1],answer[j])){
 					int const size = 30;
 					answer[j]= errors[i][j] + LINE_COST + answer[i-1];
-					data.write_tries(edges[previous][j].to_string());
-					data.write_tries(edges[previous][i].to_string());
-					data.write_tries(edges[i][j].to_string());
 					previous = i;
 				}
-				else{
-					data.write_tries(edges[previous][i-1].to_string());
-					data.write_tries(edges[previous][i].to_string());
-				}
 			} // The minimum of all the points up to now, so that we take the minimum of drawing a new line vs adding it to an existing line
-		}
+		}	
+		data.write_tries(edges[previous][j].to_string(j,previous));
+		char temp[30];
+		sprintf(temp,"lim:%lf;%lf",data.get_extrema().first,data.get_extrema().second);
+		std::string limits = temp;
+		data.write_tries(temp);
 	}
 
 	std::cout<<"The answer is "<<answer[values.size()-1]<<std::endl;

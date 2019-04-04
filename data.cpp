@@ -19,6 +19,8 @@ const std::string Data::LINES_LOCATION = "data/lines.txt";
  * The default constructor which makes use of the default path and the defult delimiter
  */
 Data::Data(){
+	this->x_min = std::numeric_limits<double>::max();
+	this->x_max = std::numeric_limits<double>::min();
 	this->path = DEFAULT_PATH;
 	this->delim = DEFAULT_DELIM;
 	file_handle.open(LINES_LOCATION,std::ios::out);
@@ -33,6 +35,8 @@ Data::Data(){
  * The delimiter used within the dataset
  */
 Data::Data(std::string path,std::string delim){
+	this->x_min = std::numeric_limits<double>::max();
+	this->x_max = std::numeric_limits<double>::min();
 	this->path = path;
 	this->delim = delim; 
 	file_handle.open(LINES_LOCATION,std::ios::out);
@@ -72,7 +76,6 @@ std::vector<std::string> Data::split(const char *str, char delim )
 std::vector<Node> Data::read_data(){
 	std::fstream file_handle;
 	file_handle.open(path,std::ios::in);
-
 	std::vector<Node> values;
 
 	if(file_handle.is_open()){
@@ -83,6 +86,8 @@ std::vector<Node> Data::read_data(){
 			std::vector<std::string> temp = split(line.c_str(),delim.at(0));
 			char* term;
 			double x = strtod(temp[0].c_str(),&term);
+			x_max = (x > x_max)? x:x_max;
+			x_min = (x < x_min)? x:x_min;
 			if(*term!=0){
 				std::cout<<"Not a double\n";
 				exit(EXIT_FAILURE);
@@ -112,4 +117,8 @@ void Data::write_tries(std::string input){
 		std::cout<<"Unable to find the file lines.txt, in the data file. HINT:Define the data folder\n";
 		exit(EXIT_FAILURE);
 	}
+}
+
+std::pair<double,double> Data::get_extrema(){
+	return std::make_pair(this->x_min,this->x_max);
 }
