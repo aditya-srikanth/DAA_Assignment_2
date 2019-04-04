@@ -41,10 +41,15 @@
 #include "data.h"
 #include "edge.h"
 #include "line_cost.h"
-#define LINES_LOCATION "data/lines.txt"
+#include <string.h>
+
 double calculate_error(double slope,double intercept,Node point){
 	double predict = slope * point.getX() + intercept;
 	double dev = predict - point.getY();
+	return dev*dev;
+}
+double calculate_error_for_special_cases(double start_x,Node point){
+	double dev = start_x - point.getX();
 	return dev*dev;
 }
 
@@ -55,6 +60,8 @@ int main(){
 	//Algorithm comes here
 	double slope_of_best_fit,intercept_of_best_fit,sum_of_x,sum_of_y,sum_of_x_square,sum_of_xy;
 	double errors[values.size()][values.size()];
+	memset(errors,0,sizeof(errors));
+	Edge edges[values.size()][values.size()];
 
 	for(int k = 0; k < values.size() ; k++){
 		for(int j = 0; j <= k;j++){
@@ -84,18 +91,25 @@ int main(){
 					else if(values[k].getX()<0){
 						intercept_of_best_fit =  std::numeric_limits<double>::max() ;	
 					}
-
+					for(int m = j; m<=k ; m++){
+						errors[j][k] += calculate_error_for_special_cases(values[j].getX(),values[m]);
+					}
+					double average_x = sum_of_x/(k-j+1); 
+					edges[j][k]=Edge(slope_of_best_fit,average_x,values[j].getY(),values[k].getY());
 				}
 				else{
 					slope_of_best_fit = ( (k-j+1)*sum_of_xy - sum_of_x*sum_of_y ) / ( (k-j+1)*sum_of_x_square - sum_of_x*sum_of_x); 
 					intercept_of_best_fit = (sum_of_y - sum_of_x*slope_of_best_fit)/(k-j+1);
-				}
-				for(int m = j; m<=k ; m++){
-					errors[j][k] += calculate_error(slope_of_best_fit,intercept_of_best_fit,values[m]);
+					for(int m = j; m<=k ; m++){
+						errors[j][k] += calculate_error(slope_of_best_fit,intercept_of_best_fit,values[m]);
+					}
+					std::cout<<"The error is "<<j<<' '<<k<<' '<<errors[j][k]<<"\n";
+					edges[j][k]=Edge(slope_of_best_fit,intercept_of_best_fit,values[j],values[k]);
 				}
 			}
 			else{
 				errors[j][j] = 0;
+				std::cout<<"The error is "<<j<<' '<<j<<' '<<errors[j][j]<<"\n";
 			}
 		}
 	}
@@ -106,30 +120,31 @@ int main(){
 		answer[i] =  std::numeric_limits<double>::max() ;
 	}
 
-	std::fstream file_handle;
-	file_handle.open(LINES_LOCATION,std::ios::out);
-	if(file_handle.is_open()){
-		Edge temp = Edge(values[0],values[1]); // default line
-		for (int j = 1;j < values.size() ;j++){
-			for(int i=0; i <= j; i++ ){
-				if(i ==0 ){
-					answer[j]=std::min(errors[i][j] + LINE_COST ,answer[j]); // As we try from the starting point, the line goes from the start to the current point
-					temp = Edge(values[i],values[j]);
+	int previous = 0;
+	for (int j = 1;j < values.size() ;j++){
+		for(int i=0; i <= j; i++ ){
+			if(i ==0 ){
+				answer[j]=std::min(errors[i][j] + LINE_COST ,answer[j]); // As we try from the starting point, the line goes from the start to the current point
+				data.write_tries(edges[i][j].to_string());
+				previous = 0;
+			}
+			else{
+				if(answer[j]>std::min(errors[i][j] + LINE_COST + answer[i-1],answer[j])){
+					answer[j]= errors[i][j] + LINE_COST + answer[i-1];
+					data.write_tries(edges[previous][j].to_string());
+					data.write_tries(edges[previous][i-1].to_string());
+					data.write_tries(edges[i][j].to_string());
+					previous = i;
 				}
 				else{
-					if(answer[j]>std::min(errors[i][j] + LINE_COST + answer[i-1],answer[j])){
-						answer[j]= errors[i][j] + LINE_COST + answer[i-1];
-						temp = Edge(values[i],values[j]);
-					}
-				} // The minimum of all the points up to now, so that we take the minimum of drawing a new line vs adding it to an existing line
-			}
-			file_handle << temp.to_string()<< std::endl;
+					data.write_tries(edges[previous][i-1].to_string());
+					data.write_tries(edges[previous][i].to_string());
+				}
+			} // The minimum of all the points up to now, so that we take the minimum of drawing a new line vs adding it to an existing line
 		}
-		std::cout<<"The answer is "<<answer[values.size()-1]<<std::endl;
 	}
-	else{
-		std::cout << "the location for storing the lines is not found\n";
-	}
+
+	std::cout<<"The answer is "<<answer[values.size()-1]<<std::endl;
 	return 0;
 }
 
