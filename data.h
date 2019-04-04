@@ -7,6 +7,8 @@
 #include <vector>
 #include <cstdlib>
 #include "node.h"
+#include <limits>
+
 /**
  * @brief 
  * Data contains all the functionality to deal with the input dataset

@@ -151,11 +151,11 @@ int main(int argc,char** argv){
 			} // The minimum of all the points up to now, so that we take the minimum of drawing a new line vs adding it to an existing line
 		}	
 		data.write_tries(edges[previous][j].to_string(j,previous));
-		char temp[30];
-		sprintf(temp,"lim:%lf;%lf",data.get_extrema().first,data.get_extrema().second);
-		std::string limits = temp;
-		data.write_tries(temp);
 	}
+	char temp[30];
+	sprintf(temp,"lim;%lf:%lf",data.get_extrema().first,data.get_extrema().second);
+	std::string limits = temp;
+	data.write_tries(temp);
 
 	std::cout<<"The answer is "<<answer[values.size()-1]<<std::endl;
 	return 0;
