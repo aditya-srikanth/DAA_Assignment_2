@@ -1,3 +1,5 @@
 #define LINE_COST  10
-//TODO
-//Set line cost from the python file
+/**
+ * @brief 
+ * This file has the cost of the line set by the user.
+ */

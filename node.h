@@ -2,7 +2,10 @@
 #define NODE
 
 #include <string>
-
+/**
+ * @brief 
+ * This class encompasses the behavior shown by a Node.
+ */
 class Node{
 	private:
 		double x;

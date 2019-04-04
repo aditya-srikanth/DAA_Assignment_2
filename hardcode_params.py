@@ -1,2 +1,5 @@
 path = "data/DataPoints.txt"
 delim = ","
+header_path = "line_cost.h"
+lines_path = "data/lines.txt"
+point_delim = ":"
