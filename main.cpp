@@ -40,7 +40,6 @@
 #include "node.h"
 #include "data.h"
 #include "edge.h"
-#include "line_cost.h"
 #include <string.h>
 
 double calculate_error(double slope,double intercept,Node point){
@@ -53,7 +52,22 @@ double calculate_error_for_special_cases(double start_x,Node point){
 	return dev*dev;
 }
 
-int main(){
+int main(int argc,char** argv){
+	double LINE_COST;
+	if(argc == 2){
+		char* term;
+		LINE_COST = strtod(argv[1],&term);
+		if(*term!=0){
+			std::cout<<"Not a double\n";
+			exit(EXIT_FAILURE);
+		}
+	}
+	else{
+		std::cout<<"Incorrect number of arguments\n";
+		exit(EXIT_FAILURE);
+	}
+	
+	
 	Data data; // default cnstr, so use default locations
 	std::vector<Node> values = data.read_data();
 	// TODO
@@ -63,8 +77,8 @@ int main(){
 	memset(errors,0,sizeof(errors));
 	Edge edges[values.size()][values.size()];
 
-	for(int k = 0; k < values.size() ; k++){
-		for(int j = 0; j <= k;j++){
+	for(int k = 0; k < values.size() ; k++){ //Loop for the end point
+		for(int j = 0; j <= k;j++){ // loop for the start
 			slope_of_best_fit = 0 ;
 			intercept_of_best_fit = 0;
 			sum_of_x = 0;
@@ -91,10 +105,10 @@ int main(){
 					else if(values[k].getX()<0){
 						intercept_of_best_fit =  std::numeric_limits<double>::max() ;	
 					}
-					for(int m = j; m<=k ; m++){
-						errors[j][k] += calculate_error_for_special_cases(values[j].getX(),values[m]);
-					}
 					double average_x = sum_of_x/(k-j+1); 
+					for(int m = j; m<=k ; m++){
+						errors[j][k] += calculate_error_for_special_cases(average_x,values[m]);
+					}
 					edges[j][k]=Edge(slope_of_best_fit,average_x,values[j].getY(),values[k].getY());
 				}
 				else{
@@ -122,17 +136,18 @@ int main(){
 
 	int previous = 0;
 	for (int j = 1;j < values.size() ;j++){
-		for(int i=0; i <= j; i++ ){
-			if(i ==0 ){
+		for(int i=0; i < j; i++ ){
+			if(i == 0 ){
 				answer[j]=std::min(errors[i][j] + LINE_COST ,answer[j]); // As we try from the starting point, the line goes from the start to the current point
 				data.write_tries(edges[i][j].to_string());
 				previous = 0;
 			}
-			else{
+			else{//TODO handle intersection of the lines.
 				if(answer[j]>std::min(errors[i][j] + LINE_COST + answer[i-1],answer[j])){
+					int const size = 30;
 					answer[j]= errors[i][j] + LINE_COST + answer[i-1];
 					data.write_tries(edges[previous][j].to_string());
-					data.write_tries(edges[previous][i-1].to_string());
+					data.write_tries(edges[previous][i].to_string());
 					data.write_tries(edges[i][j].to_string());
 					previous = i;
 				}

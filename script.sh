@@ -1,3 +1,3 @@
 #! /bin/bash
 g++ main.cpp data.cpp edge.cpp node.cpp
-./a.out
+./a.out $1
