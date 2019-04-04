@@ -22,4 +22,5 @@
 			char format_string[length];
 			sprintf(format_string,"%lf,%lf",this->x,this->y);
 			std::string temp = format_string;
+			return temp;
 		}

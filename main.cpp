@@ -24,8 +24,10 @@ int main(){
 		for(int j = 0; j <= k;j++){
 			slope_of_best_fit = 0 ;
 			intercept_of_best_fit = 0;
-			sum_of_x,sum_of_y = 0;
-			sum_of_x_square,sum_of_xy = 0 ;
+			sum_of_x = 0;
+			sum_of_y = 0;
+			sum_of_x_square = 0;
+			sum_of_xy = 0 ;
 			if(j != k){
 				for(int i=j;i<=k;i++){
 					sum_of_y += values[i].getY();
@@ -33,7 +35,25 @@ int main(){
 					sum_of_xy += values[i].getX() * values[i].getY() ;
 					sum_of_x_square += values[i].getX() * values[i].getX();
 				}
-				slope_of_best_fit = ( values.size()*sum_of_xy - sum_of_x*sum_of_y ) / (values.size()*sum_of_x_square - sum_of_x*sum_of_x); 
+				if((k-j+1)*sum_of_x_square - sum_of_x*sum_of_x == 0){
+					if((k-j+1)*sum_of_xy - sum_of_x*sum_of_y > 0){
+						slope_of_best_fit = std::numeric_limits<double>::max() ;
+					}
+					else if ((k-j+1)*sum_of_xy - sum_of_x*sum_of_y < 0){
+						slope_of_best_fit = - std::numeric_limits<double>::max() ;
+					}// Assuming  no repeated points
+					if(values[k].getX()>0){
+						intercept_of_best_fit = - std::numeric_limits<double>::max() ;
+					}
+					else if(values[k].getX()<0){
+						intercept_of_best_fit =  std::numeric_limits<double>::max() ;	
+					}
+
+				}
+				else{
+					slope_of_best_fit = ( (k-j+1)*sum_of_xy - sum_of_x*sum_of_y ) / ( (k-j+1)*sum_of_x_square - sum_of_x*sum_of_x); 
+					intercept_of_best_fit = (sum_of_y - sum_of_x*slope_of_best_fit)/(k-j+1);
+				}
 				for(int m = j; m<=k ; m++){
 					errors[j][k] += calculate_error(slope_of_best_fit,intercept_of_best_fit,values[m]);
 				}
@@ -50,8 +70,13 @@ int main(){
 		answer[i] =  std::numeric_limits<double>::max() ;
 	}
 	for (int j = 1;j < values.size() ;j++){
-		for(int i=1; i <= j; i++ ){
-			answer[i]=std::min(errors[i][j] + LINE_COST + answer[i-1],answer[i]);
+		for(int i=0; i <= j; i++ ){
+			if(i ==0 ){
+				answer[j]=std::min(errors[i][j] + LINE_COST ,answer[j]);
+			}
+			else{
+				answer[j]=std::min(errors[i][j] + LINE_COST + answer[i-1],answer[j]);
+			}
 		}
 	}
 	std::cout<<"The answer is "<<answer[values.size()-1]<<std::endl;

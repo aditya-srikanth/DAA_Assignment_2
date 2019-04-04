@@ -40,7 +40,6 @@ std::vector<Node> Data::read_data(){
 		std::string line;
 		while(std::getline(file_handle,line)){
 			std::vector<std::string> temp = split(line.c_str(),delim.at(0));
-			// std::cout<<temp[0]<<","<<temp[1]<<"\n";
 			char* term;
 			double x = strtod(temp[0].c_str(),&term);
 			if(*term!=0){
@@ -52,7 +51,6 @@ std::vector<Node> Data::read_data(){
 				std::cout<<"Not a double\n";
 				exit(EXIT_FAILURE);
 			}
-
 			Node temp_node = Node(x,y);
 			values.push_back(temp_node);
 		}
