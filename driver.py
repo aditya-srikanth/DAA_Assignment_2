@@ -4,6 +4,9 @@ import os
 import matplotlib.pyplot as plt
 
 def read_data():
+	'''
+		Code to read the data from the file
+	'''
 	data = []
 	with open(hardcode_params.path,"r") as file_handle:
 		for line in file_handle:

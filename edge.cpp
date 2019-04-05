@@ -77,7 +77,7 @@ Edge::Edge(double slope,double average_x_value,double start_y,double end_y){
  * @return std::string 
  */
 std::string Edge::to_string(int first_index, int second_index){
-    const int length = 50;
+    const int length = 100;
     char temp[length];
     sprintf(temp,"%d,%d; %lf:%lf",first_index,second_index,this->slope,this->intercept);
     std::string val = temp;

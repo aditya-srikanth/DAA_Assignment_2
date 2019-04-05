@@ -108,7 +108,12 @@ std::vector<Node> Data::read_data(){
 	}
 	return values;
 }
-
+/**
+ * @brief 
+ * This function is used to give the output to the lines.txt file which contains data for the visualizer.
+ * @param input 
+ * The string that will be written into the file
+ */
 void Data::write_tries(std::string input){
 	if(this->file_handle.is_open()){
 		this->file_handle << input << '\n' ;
@@ -119,6 +124,11 @@ void Data::write_tries(std::string input){
 	}
 }
 
+/**
+ * @brief 
+ * This function returns a pair containing the most extreme x coordinates.
+ * @return std::pair<double,double> 
+ */
 std::pair<double,double> Data::get_extrema(){
 	return std::make_pair(this->x_min,this->x_max);
 }
