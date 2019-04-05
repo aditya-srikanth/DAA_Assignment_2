@@ -109,6 +109,8 @@ int main(int argc,char** argv){
 					for(int m = j; m<=k ; m++){
 						errors[j][k] += calculate_error_for_special_cases(average_x,values[m]);
 					}
+					
+					std::cout<<"The error is "<<j<<' '<<k<<' '<<errors[j][k]<<"\n";
 					edges[j][k]=Edge(slope_of_best_fit,average_x,values[j].getY(),values[k].getY());
 				}
 				else{
@@ -141,12 +143,14 @@ int main(int argc,char** argv){
 			if(i == 0 ){
 				answer[j]=std::min(errors[i][j] + LINE_COST ,answer[j]); // As we try from the starting point, the line goes from the start to the current point
 				previous = 0;
+				std::cout<<"starting with "<<i<<" "<<j<<" "<<errors[i][j]<<"\n";
 			}
 			else{//TODO handle intersection of the lines.
 				if(answer[j]>std::min(errors[i][j] + LINE_COST + answer[i-1],answer[j])){
 					int const size = 30;
 					answer[j]= errors[i][j] + LINE_COST + answer[i-1];
 					previous = i;
+					std::cout<<"updated to "<<i<<" "<<j<<" "<<errors[i][j]<<"\n";
 				}
 			} // The minimum of all the points up to now, so that we take the minimum of drawing a new line vs adding it to an existing line
 		}	
