@@ -94,17 +94,36 @@ def show_fig():
 
 	# pass
 
+def generate_data():
+	if not os.path.isdir("data"):
+		os.mkdir(data)
+	size = int(input("enter the size of the dataset\n"))
+	data = np.random.randn(size,2)
+	data.sort(axis = 0)
+	with open("data/DataPoints.txt","w") as f:
+		for datapoint in data:
+			string = str(datapoint[0]) + hardcode_params.delim + str(datapoint[1])+"\n"
+			print(string)
+			f.write(string)
+	print("dataset generated")
+
 def driver():
 	# run the c++ code
 	# get the data
 	# run the visualization
-	line_error = float(input("Enter the value for the line cost to be used\n"))
+	line_error = float(input("Enter the value for the line cost to be used, enter -1 to exit\n"))
+	if line_error < 0:
+		return True
 	os.system(str('bash script.sh '+str(line_error)))
 	show_fig()
+	return False
 
 def main():
+	generate_data()
 	data = read_data()
-	driver()
+	done = False
+	while not done:
+		done = driver()
 
 if __name__ == "__main__":
 	main()
