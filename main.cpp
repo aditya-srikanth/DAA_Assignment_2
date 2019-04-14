@@ -4,33 +4,24 @@
  *
  * The objective of this code is to run a dynamic programming algorithm so as to find multiple lines of best fit so as to find the number of lines of best fit.
  * 
- * Here we have made use of three algorithms:
- * 	- Graham Scan
- * 	- Jarvis March
- * 	- Kirk-Patrick Sidele Algorithm
+ * The driver.py python file is responsible for running the entire execution. On invoking this function, it in turn invokes the C++ executable through a bash script.
+ * The bash file in turn is responsible for recompilation and invoking the newly created executable after compilation.
  * \section install Installation
- *	There are two folders
- *   - Refactored Code
- *   - Vizard_Vizon
+ * 
+ * There are two python dependencies for the visualization
+ * 	- matplotlib for graphing
+ * 	- numpy for the dataprocessing<br/><br/>
  *
- * The first contains the optimized code for testing the run time of each the second contains the additional code for visualization
- * \subsection step1 Testing the performance:
- * Navigate to the Refactored code folder.<br>
- * To test the performance run the command-<br>
- * <b>bash script</b><br>
- * Take user input from the terminal.
- * The performace for each will be displayed on the terminal output.<br>
- * <b>Note: This currently supports up to 10^7 data points</b>
- * \subsection step2 Testing the Visualization:
- * Navigate to the Vizard_Vizon folder.<br>
- * To test the performance run the command-<br>
- * <b>bash script</b><br>
- * Take user input from the terminal.<br>
- * After the execution is complete, there will be an animated plot of the working depending on the option that has been taken.<br>
- * In addition, there will be gifs generated, so that we do not have to run the algorithm one more time.<br>
+ * <strong> Run the requirements.sh file to install all dependencies </strong>
+ * \subsection step1 Running the Program:
+ * 	- python3 driver.py
+ * 	- enter the number of data points for the graph <strong> Not more than 386 due to memory constrains on large arrays </strong>
+ * 	- enter the cost of each line.<br/><br/> 
+ * 
+ * <strong> Each input is given in the Comman Line Interface </strong>
+ * 
  * \subsection step3 Conclusions:
- * Jarvis march performs better on an average, however, the difference between them is not significant, in the sense that they both run in the same order of time.<br>
- * However, Kirkpartik-Sidel does not seem to scale up to that factor due to the fact that the use of vectors is not efficient due to the large number of memory operations.
+ * We are able to run the algorithm in <strong> O(n^3) </strong>. However, we cannot run very large values due to the fact that the array of edges required for the visualization occupies too much memory.
  */
 #include <iostream>
 #include <vector>
