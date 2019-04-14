@@ -76,7 +76,7 @@ int main(int argc,char** argv){
 	double errors[values.size()][values.size()];
 	memset(errors,0,sizeof(errors));
 	Edge edges[values.size()][values.size()];
-
+	
 	for(int k = 0; k < values.size() ; k++){ //Loop for the end point
 		for(int j = 0; j <= k;j++){ // loop for the start
 			slope_of_best_fit = 0 ;
@@ -131,7 +131,7 @@ int main(int argc,char** argv){
 	}
 
 	double answer[values.size()];
-	answer[0] = 0;
+	answer[0] = LINE_COST;
 	for(int i=1;i<values.size();i++){
 		answer[i] =  std::numeric_limits<double>::max() ;
 	}
@@ -143,14 +143,13 @@ int main(int argc,char** argv){
 			if(i == 0 ){
 				answer[j]=std::min(errors[i][j] + LINE_COST ,answer[j]); // As we try from the starting point, the line goes from the start to the current point
 				previous = 0;
-				std::cout<<"starting with "<<i<<" "<<j<<" "<<errors[i][j]<<"\n";
+				std::cout<<"starting with "<<i<<" "<<j<<" "<<answer[j]<<"\n";
 			}
 			else{//TODO handle intersection of the lines.
-				if(answer[j]>std::min(errors[i][j] + LINE_COST + answer[i-1],answer[j])){
-					int const size = 30;
+				if(answer[j] > errors[i][j] + LINE_COST + answer[i-1]){
 					answer[j]= errors[i][j] + LINE_COST + answer[i-1];
 					previous = i;
-					std::cout<<"updated to "<<i<<" "<<j<<" "<<errors[i][j]<<"\n";
+					std::cout<<"updated to "<<i<<" "<<j<<" "<<answer[j]<<"\n";
 				}
 			} // The minimum of all the points up to now, so that we take the minimum of drawing a new line vs adding it to an existing line
 		}	

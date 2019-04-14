@@ -96,7 +96,7 @@ def show_fig():
 
 def generate_data():
 	if not os.path.isdir("data"):
-		os.mkdir(data)
+		os.mkdir('data')
 	size = int(input("enter the size of the dataset\n"))
 	data = np.random.randn(size,2)
 	data.sort(axis = 0)
