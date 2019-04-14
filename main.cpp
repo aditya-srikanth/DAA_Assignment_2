@@ -15,7 +15,7 @@
  * <strong> Run the requirements.sh file to install all dependencies </strong>
  * \subsection step1 Running the Program:
  * 	- python3 driver.py
- * 	- enter the number of data points for the graph <strong> Not more than 386 due to memory constrains on large arrays </strong>
+ * 	- enter the number of data points for the graph <strong> Not more than 1010 due to memory constrains on large arrays </strong>
  * 	- enter the cost of each line.<br/><br/> 
  * 
  * <strong> Each input is given in the Comman Line Interface </strong>
@@ -66,8 +66,11 @@ int main(int argc,char** argv){
 	double slope_of_best_fit,intercept_of_best_fit,sum_of_x,sum_of_y,sum_of_x_square,sum_of_xy;
 	double errors[values.size()][values.size()];
 	memset(errors,0,sizeof(errors));
-	Edge edges[values.size()][values.size()];
-	
+	Edge** edges = new Edge*[values.size()];
+	for(int i=0;i<values.size();i++){
+		edges[i] = new Edge[values.size()];
+	}
+
 	for(int k = 0; k < values.size() ; k++){ //Loop for the end point
 		for(int j = 0; j <= k;j++){ // loop for the start
 			slope_of_best_fit = 0 ;
